@@ -6,6 +6,14 @@ public class AuthorForBookDTO {
     private Long id;
     private String name;
 
+    public AuthorForBookDTO() {
+    }
+
+    public AuthorForBookDTO(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
     public Long getId() {
         return id;
     }

@@ -1,7 +1,5 @@
 package com.pykost.rest.service;
 
-import com.pykost.rest.entity.AuthorEntity;
-import com.pykost.rest.repository.AuthorRepository;
 import com.pykost.rest.repository.BookRepository;
 import com.pykost.rest.dto.BookDTO;
 import com.pykost.rest.entity.BookEntity;
@@ -15,13 +13,11 @@ import java.util.Optional;
 @org.springframework.stereotype.Service
 public class BookServiceImpl implements Service<BookDTO, Long> {
     private final BookRepository bookRepository;
-    private final AuthorRepository authorRepository;
     private final BookMapper bookMapper;
 
     @Autowired
-    public BookServiceImpl(BookRepository bookRepository, AuthorRepository authorRepository, BookMapper bookMapper) {
+    public BookServiceImpl(BookRepository bookRepository, BookMapper bookMapper) {
         this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
         this.bookMapper = bookMapper;
     }
 
@@ -37,7 +33,8 @@ public class BookServiceImpl implements Service<BookDTO, Long> {
     @Override
     @Transactional
     public Optional<BookDTO> getById(Long id) {
-        return bookRepository.findById(id).map(bookMapper::toDTO);
+        return bookRepository.findById(id)
+                .map(bookMapper::toDTO);
     }
 
     @Override

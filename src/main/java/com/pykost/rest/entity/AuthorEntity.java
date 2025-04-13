@@ -26,6 +26,12 @@ public class AuthorEntity {
         this.books = new ArrayList<>();
     }
 
+    public AuthorEntity(Long id, String name, List<BookEntity> books) {
+        this.id = id;
+        this.name = name;
+        this.books = books;
+    }
+
     public Long getId() {
         return id;
     }

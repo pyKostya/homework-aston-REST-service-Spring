@@ -8,6 +8,16 @@ public class BookDTO {
     private String description;
     private AuthorForBookDTO author;
 
+    public BookDTO() {
+    }
+
+    public BookDTO(Long id, String name, String description, AuthorForBookDTO author) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.author = author;
+    }
+
     public Long getId() {
         return id;
     }

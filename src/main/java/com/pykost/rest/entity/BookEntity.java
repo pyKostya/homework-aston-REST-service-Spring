@@ -13,8 +13,8 @@ public class BookEntity {
     private String name;
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.DETACH, CascadeType.PERSIST}, optional = false)
-    @JoinColumn(name = "author_id")
+    @ManyToOne(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "author_id", nullable = false)
     private AuthorEntity author;
 
     public BookEntity() {
