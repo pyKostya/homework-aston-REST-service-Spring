@@ -1,6 +1,7 @@
 package com.pykost.rest.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,19 +12,15 @@ import java.util.Objects;
 public class AuthorEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
+    @NotNull
     @Column(unique = true)
     private String name;
-    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "author", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<BookEntity> books = new ArrayList<>();
 
     public AuthorEntity() {
-    }
-
-    public AuthorEntity(Long id, String name) {
-        this.id = id;
-        this.name = name;
-        this.books = new ArrayList<>();
     }
 
     public AuthorEntity(Long id, String name, List<BookEntity> books) {
@@ -68,4 +65,5 @@ public class AuthorEntity {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
 }

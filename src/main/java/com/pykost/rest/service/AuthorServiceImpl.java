@@ -23,14 +23,6 @@ public class AuthorServiceImpl implements Service<AuthorDTO, Long> {
 
     @Override
     @Transactional
-    public AuthorDTO create(AuthorDTO authorDTO) {
-        AuthorEntity entity = authorMapper.toEntity(authorDTO);
-        AuthorEntity save = authorRepository.save(entity);
-        return authorMapper.toDTO(save);
-    }
-
-    @Override
-    @Transactional
     public Optional<AuthorDTO> getById(Long id) {
         return authorRepository.findById(id)
                 .map(authorMapper::toDTO);
@@ -38,9 +30,20 @@ public class AuthorServiceImpl implements Service<AuthorDTO, Long> {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        authorRepository.deleteById(id);
+    public List<AuthorDTO> getAll() {
+        return authorRepository.findAll().stream()
+                .map(authorMapper::toDTO)
+                .toList();
     }
+
+    @Override
+    @Transactional
+    public AuthorDTO create(AuthorDTO authorDTO) {
+        AuthorEntity entity = authorMapper.toEntity(authorDTO);
+        AuthorEntity save = authorRepository.save(entity);
+        return authorMapper.toDTO(save);
+    }
+
 
     @Override
     @Transactional
@@ -53,10 +56,10 @@ public class AuthorServiceImpl implements Service<AuthorDTO, Long> {
 
     @Override
     @Transactional
-    public List<AuthorDTO> getAll() {
-        return authorRepository.findAll().stream()
-                .map(authorMapper::toDTO)
-                .toList();
+    public boolean delete(Long id) {
+        boolean existsById = authorRepository.existsById(id);
+        authorRepository.deleteById(id);
+        return existsById;
     }
 
 }

@@ -3,7 +3,6 @@ package com.pykost.rest.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pykost.rest.dto.AuthorForBookDTO;
 import com.pykost.rest.dto.BookDTO;
-import com.pykost.rest.exception.NoSuchException;
 import com.pykost.rest.service.Service;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -121,17 +120,17 @@ class BookControllerTest {
 
     @Test
     void deleteBook() throws Exception {
-        doNothing().when(service).delete(book1.getId());
+        doReturn(true).when(service).delete(book1.getId());
 
         mockMvc.perform(delete("/api/books/1"))
-                .andExpect(status().isNoContent());
+                .andExpect(status().isOk());
 
         verify(service, times(1)).delete(book1.getId());
     }
 
     @Test
     void deleteBook_WhenAuthorNotExists_ShouldReturn404() throws Exception {
-        doThrow(new NoSuchException("Book not found")).when(service).delete(10L);
+        doReturn(false).when(service).delete(10L);
 
         mockMvc.perform(delete("/api/books/10"))
                 .andExpect(status().isNotFound());

@@ -8,7 +8,7 @@ public interface Service<E, K> {
 
     Optional<E> getById(K k);
 
-    void delete(K k);
+    boolean delete(K k);
 
     E update(K k, E e);
 

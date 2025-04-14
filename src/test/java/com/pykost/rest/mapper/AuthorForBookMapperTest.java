@@ -6,6 +6,8 @@ import com.pykost.rest.entity.AuthorEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AuthorForBookMapperTest {
@@ -18,10 +20,11 @@ class AuthorForBookMapperTest {
     void setUp() {
         authorMapper = new AuthorForBookMapperImpl();
 
-        authorEntity = new AuthorEntity(1L, "Author");
+        authorEntity = new AuthorEntity(1L, "Author", new ArrayList<>());
 
         authorDTO = new AuthorForBookDTO(1L, "Author");
     }
+
     @Test
     void toDTO() {
         AuthorForBookDTO expected = authorMapper.toDTO(authorEntity);

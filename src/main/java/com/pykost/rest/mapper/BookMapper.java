@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 @Mapper(uses = AuthorForBookDTO.class,componentModel = MappingConstants.ComponentModel.SPRING)
 @Component
 public interface BookMapper {
+
     BookDTO toDTO(BookEntity book);
 
     BookEntity toEntity(BookDTO bookDto);

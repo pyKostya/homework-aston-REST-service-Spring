@@ -11,6 +11,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,7 +34,7 @@ class AuthorServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        authorEntity = new AuthorEntity(1L, "Author");
+        authorEntity = new AuthorEntity(1L, "Author", new ArrayList<>());
 
         authorDTO = new AuthorDTO();
         authorDTO.setId(1L);
@@ -74,9 +75,16 @@ class AuthorServiceImplTest {
 
     @Test
     void delete() {
-        service.delete(authorDTO.getId());
+        doReturn(true).when(repository).existsById(authorEntity.getId());
+        doNothing().when(repository).deleteById(authorEntity.getId());
+
+
+        boolean expected = service.delete(authorDTO.getId());
+
+        assertTrue(expected);
 
         verify(repository, times(1)).deleteById(authorEntity.getId());
+        verify(repository, times(1)).existsById(authorEntity.getId());
         verifyNoMoreInteractions(repository);
     }
 

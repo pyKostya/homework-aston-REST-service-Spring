@@ -4,6 +4,7 @@ import com.pykost.rest.dto.AuthorDTO;
 import com.pykost.rest.exception.NoSuchException;
 import com.pykost.rest.service.Service;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,29 +26,30 @@ public class AuthorController {
     }
 
     @GetMapping("/authors/{id}")
-    public AuthorDTO getAuthor(@PathVariable("id") Long id) {
+    public AuthorDTO getAuthor(@PathVariable(value = "id") Long id) {
         return service.getById(id)
                 .orElseThrow(() -> new NoSuchException("Author not found with id: " + id));
     }
 
     @PostMapping("/authors")
-    public AuthorDTO addNewAuthor(@RequestBody AuthorDTO authorDTO){
+    public AuthorDTO addNewAuthor(@RequestBody AuthorDTO authorDTO) {
         return service.create(authorDTO);
     }
 
     @PutMapping("/authors/{id}")
-    public AuthorDTO updateAuthor(@PathVariable("id") Long id, @RequestBody AuthorDTO authorDTO){
+    public AuthorDTO updateAuthor(@PathVariable(value = "id") Long id, @RequestBody AuthorDTO authorDTO) {
         return service.update(id, authorDTO);
     }
 
     @DeleteMapping("/authors/{id}")
-    public ResponseEntity<Void> deleteAuthor(@PathVariable("id") Long id) {
-        try {
-            service.delete(id);
-            return ResponseEntity.noContent().build();
-        } catch (NoSuchException e) {
-            return ResponseEntity.notFound().build();
+    public ResponseEntity<HttpStatus> deleteAuthor(@PathVariable(value = "id") Long id) {
+        boolean status = service.delete(id);
+        if (status) {
+            return new ResponseEntity<>(HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
 
 }

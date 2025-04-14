@@ -13,12 +13,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,7 +35,7 @@ class BookServiceImplTest {
 
     @BeforeEach
     void setUp() {
-        AuthorEntity authorEntity = new AuthorEntity(1L, "Author");
+        AuthorEntity authorEntity = new AuthorEntity(1L, "Author", new ArrayList<>());
         bookEntity = new BookEntity(1L, "Book", "Description", authorEntity);
 
         AuthorForBookDTO authorForBookDTO = new AuthorForBookDTO();
@@ -87,9 +87,15 @@ class BookServiceImplTest {
 
     @Test
     void delete() {
-        service.delete(bookDTO.getId());
+        doReturn(true).when(repository).existsById(bookEntity.getId());
+        doNothing().when(repository).deleteById(bookEntity.getId());
+
+        boolean expected = service.delete(bookDTO.getId());
+
+        assertTrue(expected);
 
         verify(repository, times(1)).deleteById(bookEntity.getId());
+        verify(repository, times(1)).existsById(bookEntity.getId());
         verifyNoMoreInteractions(repository);
     }
 

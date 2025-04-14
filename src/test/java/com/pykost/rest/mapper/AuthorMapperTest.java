@@ -12,6 +12,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +32,7 @@ class AuthorMapperTest {
 
     @BeforeEach
     void setUp() {
-        AuthorEntity author = new AuthorEntity(3L, "Roderick Johnson");
+        AuthorEntity author = new AuthorEntity(3L, "Roderick Johnson", new ArrayList<>());
         bookEntity = new BookEntity(1L, "Effective Java", "Programming book", author);
         authorEntity = new AuthorEntity(1L, "Joshua Bloch", List.of(bookEntity));
 
@@ -39,6 +40,7 @@ class AuthorMapperTest {
         bookDTO = new BookDTO(1L, "Effective Java", "Programming book", authorForBookDTO);
         authorDTO = new AuthorDTO(1L, "Joshua Bloch", List.of(bookDTO));
     }
+
     @Test
     void toDTO() {
         doReturn(bookDTO).when(bookMapper).toDTO(bookEntity);

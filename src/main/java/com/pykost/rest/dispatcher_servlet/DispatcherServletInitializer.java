@@ -1,9 +1,10 @@
-package com.pykost.rest.configuration;
+package com.pykost.rest.dispatcher_servlet;
 
 
+import com.pykost.rest.configuration.AppConfiguration;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
-public class AppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
+public class DispatcherServletInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
     @Override
     protected Class<?>[] getRootConfigClasses() {
@@ -12,7 +13,7 @@ public class AppInitializer extends AbstractAnnotationConfigDispatcherServletIni
 
     @Override
     protected Class<?>[] getServletConfigClasses() {
-        return new Class[]{Config.class};
+        return new Class[]{AppConfiguration.class};
     }
 
     @Override

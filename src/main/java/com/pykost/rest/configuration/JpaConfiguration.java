@@ -3,27 +3,23 @@ package com.pykost.rest.configuration;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.*;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
-import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import javax.sql.DataSource;
 
 
 @Configuration
-@ComponentScan(basePackages = "com.pykost.rest")
-@EnableWebMvc
-@EnableTransactionManagement()
-@PropertySource("classpath:application.properties")
 @EnableJpaRepositories("com.pykost.rest.repository")
-public class Config {
+@EnableTransactionManagement
+@PropertySource("classpath:application.properties")
+
+public class JpaConfiguration {
 
     @Value("${db.url}")
     private String dbUrl;
@@ -33,6 +29,7 @@ public class Config {
 
     @Value("${db.password}")
     private String dbPassword;
+
     @Bean
     public DataSource dataSource() {
         HikariConfig config = new HikariConfig();
@@ -58,7 +55,7 @@ public class Config {
     }
 
     @Bean
-    public JpaTransactionManager transactionManager() {
+    public PlatformTransactionManager transactionManager() {
         JpaTransactionManager jpaTransactionManager = new JpaTransactionManager();
         jpaTransactionManager.setEntityManagerFactory(entityManagerFactory().getObject());
         return jpaTransactionManager;

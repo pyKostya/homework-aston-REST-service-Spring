@@ -21,15 +21,6 @@ public class BookServiceImpl implements Service<BookDTO, Long> {
         this.bookMapper = bookMapper;
     }
 
-
-    @Override
-    @Transactional
-    public BookDTO create(BookDTO bookDTO) {
-        BookEntity entity = bookMapper.toEntity(bookDTO);
-        BookEntity save = bookRepository.save(entity);
-        return bookMapper.toDTO(save);
-    }
-
     @Override
     @Transactional
     public Optional<BookDTO> getById(Long id) {
@@ -39,8 +30,18 @@ public class BookServiceImpl implements Service<BookDTO, Long> {
 
     @Override
     @Transactional
-    public void delete(Long id) {
-        bookRepository.deleteById(id);
+    public List<BookDTO> getAll() {
+        return bookRepository.findAll().stream()
+                .map(bookMapper::toDTO)
+                .toList();
+    }
+
+    @Override
+    @Transactional
+    public BookDTO create(BookDTO bookDTO) {
+        BookEntity entity = bookMapper.toEntity(bookDTO);
+        BookEntity save = bookRepository.save(entity);
+        return bookMapper.toDTO(save);
     }
 
     @Override
@@ -54,9 +55,13 @@ public class BookServiceImpl implements Service<BookDTO, Long> {
 
     @Override
     @Transactional
-    public List<BookDTO> getAll() {
-        return bookRepository.findAll().stream()
-                .map(bookMapper::toDTO)
-                .toList();
+    public boolean delete(Long id) {
+        boolean existsById = bookRepository.existsById(id);
+        bookRepository.deleteById(id);
+       return existsById;
     }
+
+
+
+
 }

@@ -7,6 +7,8 @@ import com.pykost.rest.entity.BookEntity;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class BookMapperTest {
@@ -18,11 +20,11 @@ class BookMapperTest {
     void setUp() {
         bookMapper = new BookMapperImpl();
 
-        AuthorEntity author = new AuthorEntity(1L, "Author");
+        AuthorEntity author = new AuthorEntity(1L, "Author", new ArrayList<>());
 
         bookEntity = new BookEntity(1L, "Book", "Description", author);
 
-        AuthorForBookDTO authorForBookDTO = new AuthorForBookDTO(1L,"Author");
+        AuthorForBookDTO authorForBookDTO = new AuthorForBookDTO(1L, "Author");
 
         bookDTO = new BookDTO(1L, "Book", "Description", authorForBookDTO);
     }
