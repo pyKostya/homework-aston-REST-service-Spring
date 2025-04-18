@@ -54,9 +54,9 @@ class AuthorRepositoryTest {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("testcontainers.url", postgres::getJdbcUrl);
-        registry.add("testcontainers.username", postgres::getUsername);
-        registry.add("testcontainers.password", postgres::getPassword);
+        registry.add("db.url", postgres::getJdbcUrl);
+        registry.add("db.username", postgres::getUsername);
+        registry.add("db.password", postgres::getPassword);
     }
 
     @Test

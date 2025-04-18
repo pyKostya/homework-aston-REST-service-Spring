@@ -16,7 +16,7 @@ public class BookEntity {
     @NotNull
     private String description;
 
-    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE})
     @JoinColumn(name = "author_id")
     private AuthorEntity author;
 

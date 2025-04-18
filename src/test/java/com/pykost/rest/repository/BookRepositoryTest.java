@@ -31,6 +31,7 @@ class BookRepositoryTest {
 
     BookEntity book1;
     BookEntity book2;
+    AuthorEntity author;
 
     static PostgreSQLContainer<?> postgres = new PostgreSQLContainer<>(
             "postgres:17-alpine")
@@ -44,7 +45,7 @@ class BookRepositoryTest {
     @BeforeEach
     void setUp() {
         authorRepository.deleteAll();
-        AuthorEntity author = new AuthorEntity(null, "Герберт Шилдт", new ArrayList<>());
+        author = new AuthorEntity(null, "Герберт Шилдт", new ArrayList<>());
         authorRepository.save(author);
         book1 = new BookEntity(null, "Java", "Базовые концепции языка", author);
         book2 = new BookEntity(null, "Java 2", "Основы нового платформно-независимого ООП", author);
@@ -61,9 +62,9 @@ class BookRepositoryTest {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        registry.add("testcontainers.url", postgres::getJdbcUrl);
-        registry.add("testcontainers.username", postgres::getUsername);
-        registry.add("testcontainers.password", postgres::getPassword);
+        registry.add("db.url", postgres::getJdbcUrl);
+        registry.add("db.username", postgres::getUsername);
+        registry.add("db.password", postgres::getPassword);
     }
 
     @Test
@@ -86,8 +87,7 @@ class BookRepositoryTest {
     @Test
     void save() {
         BookEntity book =
-                new BookEntity(null, "Доступный UNIX", "описани UNIXподобных ОС",
-                        new AuthorEntity(null, "Алексей Федорчук", new ArrayList<>()));
+                new BookEntity(null, "Доступный UNIX", "описани UNIXподобных ОС", author);
 
         bookRepository.save(book);
         Optional<BookEntity> bookEntity = bookRepository.findById(book.getId());
@@ -103,7 +103,7 @@ class BookRepositoryTest {
 
         BookEntity book =
                 new BookEntity(null, "Доступный UNIX", "описание UNIXподобных ОС",
-                        new AuthorEntity(null, "Алексей Федорчук", new ArrayList<>()));
+                        author);
         BookEntity saved = bookRepository.save(book);
 
         book.setName(newName);
